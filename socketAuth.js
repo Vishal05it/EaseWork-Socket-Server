@@ -5,9 +5,9 @@ const userModel = require("./user.model");
 module.exports = async (socket, next) => {
     console.log(`Socket : `, socket);
     const cookieHeader = socket.handshake.headers.cookie;
-    console.log(
-        "Handshake headers : ", socket.handshake.headers.cookie
-    );
+    // console.log(
+    //     "Handshake headers : ", socket.handshake.headers.cookie
+    // );
     console.log("Cookies : ", socket.cookies)
     if (!cookieHeader) {
         console.log("Authentication required!");
