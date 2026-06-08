@@ -22,27 +22,27 @@ io.on("connection", (socket) => {
     }
     userToSockets.get(userId).add(socket.id);
     socketToUser.set(socket.id, userId);
-    // console.log("User to Sockets : ", userToSockets);
-    // console.log("Sockets to User : ", socketToUser);
+    console.log("User to Sockets : ", userToSockets);
+    console.log("Sockets to User : ", socketToUser);
     socket.on("join-project", (projectId) => {
         socket.join(`projectId:${projectId}`);
-        //console.log(`User : ${userId} joined group chat of project : ${projectId}`)
+        console.log(`User : ${userId} joined group chat of project : ${projectId}`)
     });
     socket.on("leave-project", (projectId) => {
         socket.leave(`projectId:${projectId}`);
-        // console.log(`User : ${userId} left group chat of project : ${projectId}`)
+        console.log(`User : ${userId} left group chat of project : ${projectId}`)
     });
     socket.on("new-unread", ({ userId }) => {
         socket.join(`joinUnread:userId:${userId}`);
-        //console.log(`User : ${userId} joined unread tracking `);
+        console.log(`User : ${userId} joined unread tracking `);
     });
     socket.on("leave-unread", ({ userId }) => {
         socket.leave(`joinUnread:userId:${userId}`);
-        // console.log(`User : ${userId} left unread tracking `);
+        console.log(`User : ${userId} left unread tracking `);
 
     });
     socket.on("disconnect", () => {
-        //console.log(`Socket ID : ${socket.id} disconnected`);
+        console.log(`Socket ID : ${socket.id} disconnected`);
         const userId = socketToUser.get(socket.id);
         if (userId) {
             const sockets = userToSockets.get(userId);
@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
 });
 app.use(express.json());
 app.post("/emit", (req, res) => {
-    // console.log("Body : ", req.body);
+    console.log("Body : ", req.body);
     const sockets = userToSockets.get(req.body.userId);
     for (let socketId of sockets) {
         io.to(socketId).emit(req.body.event, req.body.payload);
@@ -68,7 +68,7 @@ app.post("/emit", (req, res) => {
     });
 });
 app.post("/chat-message", (req, res) => {
-    // console.log("Body : ", req.body);
+    console.log("Body : ", req.body);
     const { projectId, newMessage } = req.body;
     io.to(`projectId:${projectId}`).emit(
         req.body.event,
@@ -79,7 +79,7 @@ app.post("/chat-message", (req, res) => {
     });
 });
 app.post("/count-unread", (req, res) => {
-    //console.log("Body : ", req.body);
+    console.log("Body : ", req.body);
     const { userId } = req.body;
     io.to(`joinUnread:userId:${userId}`).emit(
         req.body.event,
