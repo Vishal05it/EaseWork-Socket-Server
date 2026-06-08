@@ -4,6 +4,9 @@ const connectToDB = require("./connectToDB");
 const userModel = require("./user.model");
 module.exports = async (socket, next) => {
     const cookieHeader = socket.handshake.headers.cookie;
+    console.log(
+        socket.handshake.headers.cookie
+    );
     if (!cookieHeader) {
         console.log("Authentication required!");
         return next(new Error("Authentication required!"));
