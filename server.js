@@ -10,6 +10,7 @@ const socketAuth = require("./socketAuth");
 const io = new Server(httpServer, {
     cors: {
         origin: "https://crm-tprb.vercel.app",
+        methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     },
 });
