@@ -1,4 +1,4 @@
-const cookie = require("cookie");
+
 const jwt = require("jsonwebtoken");
 const connectToDB = require("./connectToDB");
 const userModel = require("./user.model");
