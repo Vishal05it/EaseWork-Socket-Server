@@ -5,7 +5,7 @@ const userModel = require("./user.model");
 
 
 module.exports = async (socket, next) => {
-    // console.log(`Socket : `, socket);
+    console.log(`Handshake : `, socket.handshake);
     const token = socket.handshake.auth.token;
     console.log("Token : ", token);
     // console.log(
@@ -17,10 +17,7 @@ module.exports = async (socket, next) => {
         return next(new Error("Token required!"));
     }
 
-    if (token.type != "socket") {
-        console.log("Invalid Token");
-        return next(new Error("Invalid Token"));
-    }
+
     const SECRET_KEY = process.env.SECRET_KEY;
     if (!SECRET_KEY) {
         console.log("Secret Key is missing");
@@ -28,6 +25,10 @@ module.exports = async (socket, next) => {
     }
     try {
         const decoded = jwt.verify(token, SECRET_KEY);
+        if (decoded.type != "socket") {
+            console.log("Invalid Token");
+            return next(new Error("Invalid Token"));
+        }
         await connectToDB();
         const user = await userModel.findById(decoded.userId).select("-password -email -allowed -createdAt -updatedAt -paymentStatus -profilepic");
         if (!user) {
