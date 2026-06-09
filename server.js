@@ -7,6 +7,7 @@ const app = express();
 const httpServer = http.createServer(app);
 const { userToSockets, socketToUser } = require("./socket-manager");
 const socketAuth = require("./socketAuth");
+const cookieParser = require("cookie-parser");
 const io = new Server(httpServer, {
     cors: {
         origin: "https://crm-tprb.vercel.app",
@@ -15,6 +16,7 @@ const io = new Server(httpServer, {
     },
 });
 const SOCKET_PORT = process.env.SOCKET_PORT;
+app.use(cookieParser());
 io.use(socketAuth);
 io.on("connection", (socket) => {
     const userId = socket.user._id;
