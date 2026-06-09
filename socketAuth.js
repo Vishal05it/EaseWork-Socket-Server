@@ -5,12 +5,13 @@ const userModel = require("./user.model");
 
 
 module.exports = async (socket, next) => {
-    console.log(`Socket : `, socket);
+    // console.log(`Socket : `, socket);
     const token = socket.handshake.auth.token;
+    console.log("Token : ", token);
     // console.log(
     //     "Handshake headers : ", socket.handshake.headers.cookie
     // );
-    console.log("Cookies : ", socket.cookies)
+    //console.log("Cookies : ", socket.cookies)
     if (!token) {
         console.log("Token required!");
         return next(new Error("Token required!"));
